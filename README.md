@@ -1,2 +1,2 @@
 # IPC
-Inter-process communitacion library
+Inter-process communication library
