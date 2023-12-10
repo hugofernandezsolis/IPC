@@ -55,14 +55,14 @@ class SocketAddress {
     /**
      * @brief Gets the port number.
      * 
-     * @return const port_t& The port number.
+     * @return The port number.
      */
     const port_t& get_port(void) const;
 
     /**
      * @brief Gets the IP address.
      * 
-     * @return const ip_t& The IP address.
+     * @return The IP address.
      */
     const ip_t& get_ip(void) const;
 
@@ -104,7 +104,7 @@ class SocketAddress {
     /**
      * @brief Converts the SocketAddress to a string.
      * 
-     * @return std::string The string representation of the SocketAddress.
+     * @return The string representation of the SocketAddress.
      */
     std::string to_string(void) const;
     
