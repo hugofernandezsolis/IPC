@@ -44,5 +44,5 @@ target_link_libraries (
 
 # Add component tests
 add_subdirectory (
-  tests
+  ${CMAKE_CURRENT_LIST_DIR}/tests
 )

@@ -20,7 +20,8 @@ find_package(
 # Get a list of subdirectories in the current directory
 set (
   COMPONENTS
-    test          # test
+    common          # common
+    Socket          
 )
 
 add_library (
