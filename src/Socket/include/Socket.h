@@ -14,7 +14,10 @@
 #define IPC_SOCKET_H
 
 
-namespace ipc {
+#include <SocketAddress.h>
+
+
+namespace ipc {   // Inter-Process Communication
 
 
 /**
