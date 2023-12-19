@@ -6,7 +6,11 @@
  * 
  * @file SocketAddress.h
  * 
- * @brief Defines the SocketAddress class for handling IP addresses and ports.
+ * @brief Definition of SocketAddress class. 
+ * 
+ * SocketAddress is a C++ class that represents a socket address with an IP and port. It provides methods to get and
+ * set the port number and IP address, as well as check if the address, port, and IP are valid. The class also includes
+ * conversion operators to convert the SocketAddress object to a sockaddr_in structure and to a string representation.
  */
 
 
@@ -14,8 +18,13 @@
 #define IPC_SOCKET_ADDRESS_H
 
 
+#include <netinet/in.h>
+
 #include <string>
 #include <iostream>
+
+
+namespace ipc {   // Inter-Process Communication
 
 
 /**
@@ -34,9 +43,6 @@ typedef std::string ip_t;       // Type definition for IP addresses
 #define NO_PORT          -1     // No specific port
 #define RANDOM_PORT       0     // Use a random port
 #define MAX_PORT      65535     // Maximum allowed port number
-
-
-namespace ipc {   // Inter-Process Communication
 
 
 /**
@@ -102,6 +108,16 @@ class SocketAddress {
     bool has_valid_ip(void) const;
 
     /**
+     * @brief Converts the SocketAddress object to a sockaddr_in structure.
+     * 
+     * This conversion operator allows seamless integration with networking functions
+     * that use the sockaddr_in structure.
+     * 
+     * @return sockaddr_in The sockaddr_in structure representing the SocketAddress.
+     */
+    operator sockaddr_in(void) const;
+
+    /**
      * @brief Converts the SocketAddress to a string.
      * 
      * @return The string representation of the SocketAddress.
@@ -119,7 +135,7 @@ class SocketAddress {
    * @param iAddr The SocketAddress object.
    * @return std::ostream& The output stream.
    */
-  friend std::ostream& operator<<(std::ostream& os, const SocketAddress& iAddr) {
+  friend std::ostream& operator <<(std::ostream& os, const SocketAddress& iAddr) {
     os << iAddr.to_string();
     return os;
   }

@@ -12,6 +12,8 @@
 
 #include <gtest/gtest.h>
 
+#include <arpa/inet.h>
+
 #include <SocketAddress.h>
 
 
@@ -84,6 +86,17 @@ TEST(SocketAddress, ValidityChecks) {
   EXPECT_TRUE(addr.has_valid_port());
   EXPECT_TRUE(addr.has_valid_ip());
   EXPECT_TRUE(addr.is_valid());
+}
+
+TEST(SocketAddress, ConversionOperators) {
+  SocketAddress addr(TEST_PORT, TEST_IP);
+  sockaddr_in sockAddr = addr;
+  port_t port = htons(sockAddr.sin_port);
+  char ip[INET_ADDRSTRLEN];
+  inet_ntop(AF_INET, &(sockAddr.sin_addr), ip, sizeof(ip));
+
+  EXPECT_EQ(port, TEST_PORT);
+  EXPECT_EQ(ip_t(ip), TEST_IP);
 }
 
 int main(int argc, char **argv) {

@@ -21,13 +21,44 @@ namespace ipc {   // Inter-Process Communication
 
 
 /**
+ * Socket related types
+ */
+typedef int sd_t;             // Type definition for port numbers
+
+
+/**
+ * Socket related variables
+ */
+
+
+/**
  * @brief 
  * 
  */
 class Socket {
   public:
+    // Constructor with default parameter
+    Socket(const SocketAddress& iAddr = {});
+
+    // Constructor with socket descriptor and socket address parameters
+    Socket(const sd_t& iSd, const SocketAddress& iAddr = {});
+
+    // Getter method for socket descriptor
+    const sd_t& get_sd(void) const;
+
+    // Getter method for socket address
+    const SocketAddress& get_addr(void) const;
+
+    // Setter method for socket descriptor
+    void set_sd(const sd_t& iNewSd);
+
+    // Setter method for socket address
+    void set_addr(const sd_t& iNewAddr);
+
   private:
-    int sd_;
+    // Member variables
+    sd_t sd_;
+    SocketAddress addr_;
 };
 
 

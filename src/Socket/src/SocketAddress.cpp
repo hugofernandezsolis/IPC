@@ -10,6 +10,8 @@
  */
 
 
+#include <arpa/inet.h>
+
 #include <regex>
 
 #include <SocketAddress.h>
@@ -90,6 +92,22 @@ bool SocketAddress::has_valid_ip(void) const {
   const std::regex ipRegex(
     R"(\b(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})(?:\.(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})){3}\b)");
   return std::regex_match(this->get_ip(), ipRegex);
+}
+
+/**
+ * @brief Converts the SocketAddress object to a sockaddr_in structure.
+ * 
+ * This conversion operator allows seamless integration with networking functions
+ * that use the sockaddr_in structure.
+ * 
+ * @return sockaddr_in The sockaddr_in structure representing the SocketAddress.
+ */
+SocketAddress::operator sockaddr_in(void) const {
+  sockaddr_in socketAddress {};
+  socketAddress.sin_family = AF_INET;
+  inet_pton(AF_INET, this->get_ip().c_str(), &(socketAddress.sin_addr));
+  socketAddress.sin_port = htons(this->get_port());
+  return socketAddress;
 }
 
 /**
