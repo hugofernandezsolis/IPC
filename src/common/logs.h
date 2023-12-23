@@ -10,10 +10,15 @@
  */
 
 
+#ifndef LOGS_H
+#define LOGS_H
+
+
 #include <iostream>
 #include <iomanip>
 #include <chrono>
 #include <string>
+#include <cerrno>
 
 
 namespace {
@@ -39,4 +44,8 @@ namespace {
 }
 
 
-#define LOG_INFO2 LogHandler::oFileStream << '\n' << currentDateTime() << " " << FUNCTION_NAME << ": "
+#define LOG_INFO std::cout << '\n' << currentDateTime() << " " << FUNCTION_NAME << ": "
+#define LOG_ERROR std::cerr << '\n' << currentDateTime() << " " << FUNCTION_NAME << ": "
+
+
+#endif // LOGS_H

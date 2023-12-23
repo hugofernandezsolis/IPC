@@ -27,13 +27,14 @@ namespace ipc {
 
 
 TEST(SocketAddress, Constructor) {
+  LOG_INFO;
   SocketAddress addr0;
-  EXPECT_EQ(addr0.get_port(), RANDOM_PORT);
-  EXPECT_EQ(addr0.get_ip(), LOCAL_IP);
+  EXPECT_EQ(addr0.get_port(), NO_PORT);
+  EXPECT_EQ(addr0.get_ip(), NO_IP);
 
   SocketAddress addr1(TEST_PORT);
   EXPECT_EQ(addr1.get_port(), TEST_PORT);
-  EXPECT_EQ(addr1.get_ip(), LOCAL_IP);
+  EXPECT_EQ(addr1.get_ip(), NO_IP);
   
   
   SocketAddress addr2(TEST_PORT, TEST_IP);
@@ -43,12 +44,12 @@ TEST(SocketAddress, Constructor) {
 
 TEST(SocketAddress, SettersAndGetters) {
   SocketAddress addr;
-  EXPECT_EQ(addr.get_port(), RANDOM_PORT);
-  EXPECT_EQ(addr.get_ip(), LOCAL_IP);
+  EXPECT_EQ(addr.get_port(), NO_PORT);
+  EXPECT_EQ(addr.get_ip(), NO_IP);
 
   addr.set_port(TEST_PORT);
   EXPECT_EQ(addr.get_port(), TEST_PORT);
-  EXPECT_EQ(addr.get_ip(), LOCAL_IP);
+  EXPECT_EQ(addr.get_ip(), NO_IP);
 
   addr.set_ip(TEST_IP);
   EXPECT_EQ(addr.get_port(), TEST_PORT);
@@ -58,13 +59,23 @@ TEST(SocketAddress, SettersAndGetters) {
   EXPECT_EQ(addr.get_port(), RANDOM_PORT);
   EXPECT_EQ(addr.get_ip(), TEST_IP);
 
-  addr.set_ip(NO_IP);
+  addr.set_ip(LOCAL_IP);
   EXPECT_EQ(addr.get_port(), RANDOM_PORT);
-  EXPECT_EQ(addr.get_ip(), NO_IP);
+  EXPECT_EQ(addr.get_ip(), LOCAL_IP);
 }
 
 TEST(SocketAddress, ValidityChecks) {
   SocketAddress addr;
+  EXPECT_FALSE(addr.is_valid());
+
+  addr.set_port(TEST_PORT);
+  EXPECT_TRUE(addr.has_valid_port());
+  EXPECT_FALSE(addr.has_valid_ip());
+  EXPECT_FALSE(addr.is_valid());
+
+  addr.set_ip(TEST_IP);
+  EXPECT_TRUE(addr.has_valid_port());
+  EXPECT_TRUE(addr.has_valid_ip());
   EXPECT_TRUE(addr.is_valid());
 
   addr.set_port(TEST_PORT_BAD);
@@ -76,24 +87,21 @@ TEST(SocketAddress, ValidityChecks) {
   EXPECT_FALSE(addr.has_valid_port());
   EXPECT_FALSE(addr.has_valid_ip());
   EXPECT_FALSE(addr.is_valid());
-
-  addr.set_port(TEST_PORT);
-  EXPECT_TRUE(addr.has_valid_port());
-  EXPECT_FALSE(addr.has_valid_ip());
-  EXPECT_FALSE(addr.is_valid());
-
-  addr.set_ip(TEST_IP);
-  EXPECT_TRUE(addr.has_valid_port());
-  EXPECT_TRUE(addr.has_valid_ip());
-  EXPECT_TRUE(addr.is_valid());
 }
 
 TEST(SocketAddress, ConversionOperators) {
   SocketAddress addr(TEST_PORT, TEST_IP);
-  sockaddr_in sockAddr = addr;
-  port_t port = htons(sockAddr.sin_port);
+  sockaddr_in sockAddrIn = addr;
+  port_t port = htons(sockAddrIn.sin_port);
   char ip[INET_ADDRSTRLEN];
-  inet_ntop(AF_INET, &(sockAddr.sin_addr), ip, sizeof(ip));
+  inet_ntop(AF_INET, &(sockAddrIn.sin_addr), ip, sizeof(ip));
+
+  EXPECT_EQ(port, TEST_PORT);
+  EXPECT_EQ(ip_t(ip), TEST_IP);
+
+  sockaddr sockAddr = addr;
+  inet_ntop(AF_INET, &((sockaddr_in*)&sockAddr)->sin_addr, ip, sizeof(ip));
+  port = ntohs(((sockaddr_in*)&sockAddr)->sin_port);
 
   EXPECT_EQ(port, TEST_PORT);
   EXPECT_EQ(ip_t(ip), TEST_IP);
