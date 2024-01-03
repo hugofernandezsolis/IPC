@@ -105,6 +105,14 @@ bool SocketAddress::has_valid_port(void) const {
   return false;
 }
 
+bool SocketAddress::operator==(const SocketAddress& iAddr) const {
+  return ((this->get_ip() == iAddr.get_ip()) && (this->get_port() == iAddr.get_port()));
+}
+
+bool SocketAddress::operator!=(const SocketAddress& iAddr) const {
+  return !(*this == iAddr);
+}
+
 /**
  * @brief Checks if the IP address is valid.
  * 

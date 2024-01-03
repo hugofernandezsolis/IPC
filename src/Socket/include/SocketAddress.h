@@ -40,9 +40,8 @@ typedef std::string ip_t;       // Type definition for IP addresses
  * SocketAddress related variables
  */
 #define LOCAL_IP    "127.0.0.1"     // Localhost IP address
-#define NO_IP     "-1.-1.-1.-1"     // No specific IP address
+#define NO_IP         "0.0.0.0"     // No specific IP address
 
-#define NO_PORT          -1     // No specific port
 #define RANDOM_PORT       0     // Use a random port
 #define MAX_PORT      65535     // Maximum allowed port number
 
@@ -58,7 +57,7 @@ class SocketAddress {
      * @param iPort The port number.
      * @param iIp The IP address.
      */
-    SocketAddress(const port_t& iPort = NO_PORT, const ip_t& iIp = NO_IP);
+    SocketAddress(const port_t& iPort = RANDOM_PORT, const ip_t& iIp = NO_IP);
 
     /**
      * @brief Construct a new Socket Address object.
@@ -115,6 +114,10 @@ class SocketAddress {
      * @return true if valid, false otherwise.
      */
     bool has_valid_ip(void) const;
+
+    bool operator==(const SocketAddress& iAddr) const;
+
+    bool operator!=(const SocketAddress& iAddr) const;
 
     /**
      * @brief Converts the SocketAddress object to a sockaddr_in structure.

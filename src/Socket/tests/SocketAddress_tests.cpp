@@ -29,7 +29,7 @@ namespace ipc {
 TEST(SocketAddress, Constructor) {
   LOG_INFO;
   SocketAddress addr0;
-  EXPECT_EQ(addr0.get_port(), NO_PORT);
+  EXPECT_EQ(addr0.get_port(), RANDOM_PORT);
   EXPECT_EQ(addr0.get_ip(), NO_IP);
 
   SocketAddress addr1(TEST_PORT);
@@ -44,7 +44,7 @@ TEST(SocketAddress, Constructor) {
 
 TEST(SocketAddress, SettersAndGetters) {
   SocketAddress addr;
-  EXPECT_EQ(addr.get_port(), NO_PORT);
+  EXPECT_EQ(addr.get_port(), RANDOM_PORT);
   EXPECT_EQ(addr.get_ip(), NO_IP);
 
   addr.set_port(TEST_PORT);
@@ -66,12 +66,12 @@ TEST(SocketAddress, SettersAndGetters) {
 
 TEST(SocketAddress, ValidityChecks) {
   SocketAddress addr;
-  EXPECT_FALSE(addr.is_valid());
+  EXPECT_TRUE(addr.is_valid());
 
   addr.set_port(TEST_PORT);
   EXPECT_TRUE(addr.has_valid_port());
-  EXPECT_FALSE(addr.has_valid_ip());
-  EXPECT_FALSE(addr.is_valid());
+  EXPECT_TRUE(addr.has_valid_ip());
+  EXPECT_TRUE(addr.is_valid());
 
   addr.set_ip(TEST_IP);
   EXPECT_TRUE(addr.has_valid_port());

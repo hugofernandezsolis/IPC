@@ -10,8 +10,13 @@
  */
 
 
+#include "logs.h"
 #include <SocketTCP.h>
 
+#include <cstring>
+#include <functional>
+#include <string>
+#include <sys/socket.h>
 #include <unistd.h>
 
 
@@ -28,6 +33,30 @@ SocketTCP::SocketTCP(const sd_t& iSd):
     LOG_INFO << "New socket created: " << *this;
 }
 
+bool SocketTCP::bind_to(const SocketAddress& iAddr) {
+  sockaddr_in addr = iAddr;
+  if (bind(this->get_sd(), reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) == -1) {
+    LOG_INFO << "Socket " << *this << " bound to " << iAddr;
+    return true;
+  }
+  LOG_ERROR << "Couldn't bind socket " << *this << " to address " << iAddr;
+  return false;
+}
+
+bool SocketTCP::send_message(const void* iMessage, const size_t& iSize) {
+  int result = send(this->get_sd(), iMessage, iSize, 0);
+  LOG_INFO << "Sent " << std::to_string(result) << " bytes out of " << std::to_string(iSize);
+  return result == -1;
+}
+
+bool SocketTCP::receive_message(void* iMessage, size_t& iSize) {
+  memset(iMessage, 0, iSize);
+  int result = recv(this->get_sd(), iMessage, iSize, 0);
+  LOG_INFO << "Received " << std::to_string(result) << "bytes of data";
+  iSize = result;
+  return result != -1;
+}
+
 SocketAddress SocketTCP::get_address(void) const {
   sockaddr_in socketAddress;
   socklen_t addrSize = sizeof(socketAddress);
@@ -40,15 +69,15 @@ SocketAddress SocketTCP::get_address(void) const {
 socket_status_e SocketTCP::get_status(void) const {
   int opt = 0;
   socklen_t size = sizeof(opt);
-  if (getsockopt(this->get_sd(), SOL_SOCKET, SO_REUSEADDR, &opt, &size) && opt) {
+  if (getsockopt(this->get_sd(), SOL_SOCKET, SO_REUSEADDR, &opt, &size) != -1 && opt) {
     LOG_INFO << "Socket " << *this << " is listening for connections";
     return STATUS_LISTENING;
   }
-  if (getsockopt(this->get_sd(), SOL_SOCKET, SO_ACCEPTCONN, &opt, &size) && opt) {
+  if (getsockopt(this->get_sd(), SOL_SOCKET, SO_ACCEPTCONN, &opt, &size) != -1 && opt) {
     LOG_INFO << "Socket " << *this << " is bound to an address";
     return STATUS_BOUND;
   }
-  if (getsockopt(this->get_sd(), SOL_SOCKET, SO_ERROR, &opt, &size) && !opt) {
+  if (getsockopt(this->get_sd(), SOL_SOCKET, SO_ERROR, &opt, &size) != -1 && !opt) {
     LOG_INFO << "Socket " << *this << " is open";
     return STATUS_OPEN;
   }

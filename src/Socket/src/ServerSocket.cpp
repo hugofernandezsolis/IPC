@@ -12,8 +12,6 @@
 
 #include <ServerSocket.h>
 
-#include <unistd.h>
-
 
 namespace ipc {
 
@@ -49,7 +47,7 @@ bool ServerSocket::start_listening(const uint& iMaxConnNumber) const {
 bool ServerSocket::accept_connection(SocketTCP& oClientSocket, SocketAddress& oClientSocketAddr) const {
   sockaddr_in addr;
   socklen_t addrSize = sizeof(addr);
-  int sock = accept(this->get_sd(), reinterpret_cast<sockaddr*>(&addr), &addrSize);
+  int sock = accept(this->get_sd(), (struct sockaddr*)&addr, &addrSize);
   if (sock == -1) {
     LOG_ERROR << "Error on accepting connection on socket " << *this;
     return false;
