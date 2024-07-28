@@ -16,6 +16,13 @@ add_library (
   ${COMPONENT_LIB} OBJECT
 )
 
+# Set the lib linker
+set_target_properties (
+  ${COMPONENT_LIB}
+    PROPERTIES
+      LINKER_LANGUAGE CXX
+)
+
 # Include directories for the library.
 target_include_directories (
   ${COMPONENT_LIB}

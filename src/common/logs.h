@@ -43,9 +43,11 @@ namespace {
   }
 }
 
+const std::string kInitDateTime = currentDateTime();
 
-#define LOG_INFO std::cout << '\n' << currentDateTime() << " " << FUNCTION_NAME << ": "
-#define LOG_ERROR std::cerr << '\n' << currentDateTime() << " " << FUNCTION_NAME << ": "
+#define LOG_INFO    std::cout << "\n[INFO]   "    << currentDateTime() << " | " << FUNCTION_NAME << ": "
+#define LOG_ERROR   std::cout << "\n[ERROR]  "   << currentDateTime() << " | " << FUNCTION_NAME << ": "
+#define LOG_WARNING std::cout << "\n[WARNING]" << currentDateTime() << " | " << FUNCTION_NAME << ": "
 
 
 #endif // LOGS_H

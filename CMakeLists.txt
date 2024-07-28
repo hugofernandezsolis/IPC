@@ -42,5 +42,29 @@ project (IPC)
 # Enable testing for this project.
 enable_testing()
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bin)
+
 # Add the 'src' subdirectory for further project structure.
 add_subdirectory (src)
+
+
+###############################################################################
+###                   PROJECT ININSTALATIONITIALIZATION                     ###
+###############################################################################
+## This section sets the neccessary to make the library installable
+###############################################################################
+
+# Process to install the lib
+install(TARGETS ${PROJECT_NAME} ARCHIVE DESTINATION lib)
+
+
+
+# Gather source files for the component library.
+file (
+  GLOB HEADERS
+    CONFIGURE_DEPENDS
+      "${CMAKE_CURRENT_LIST_DIR}/src/*/*.h"
+)
+
+# Add the header files
+install(FILES ${HEADERS} DESTINATION /usr/include)

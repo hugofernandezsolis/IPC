@@ -32,7 +32,8 @@ find_package(
 set (
   COMPONENTS
     common          # common
-    Socket          
+    Socket          # Sockets
+    #Server          # Servers
 )
 
 add_library (

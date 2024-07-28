@@ -17,8 +17,7 @@
 #include <SocketAddress.h>
 
 
-namespace ipc {
-
+namespace ipc {   // Inter-Process Communication
 
 /**
  * @brief Construct a new Socket Address object.
@@ -26,8 +25,10 @@ namespace ipc {
  * @param iPort The port number.
  * @param iIp The IP address.
  */
-SocketAddress::SocketAddress(const port_t& iPort, const ip_t& iIp):
-  port_(iPort), ip_(iIp) {}
+SocketAddress::SocketAddress(const port_t& iPort, const ip_t& iIp) {
+  this->set_port(iPort);
+  this->set_ip(iIp);
+}
 
 /**
  * @brief Construct a new Socket Address object.
@@ -105,10 +106,39 @@ bool SocketAddress::has_valid_port(void) const {
   return false;
 }
 
+/**
+ * @brief 
+ * 
+ * @param iNewAddr 
+ * 
+ * @return
+ */
+const SocketAddress& SocketAddress::operator=(const sockaddr_in& iNewAddr) {
+  this->set_port(htons(iNewAddr.sin_port));
+  char ip[INET_ADDRSTRLEN];
+  inet_ntop(AF_INET, &(iNewAddr.sin_addr), ip, sizeof(ip));
+  this->set_ip(ip);
+  return *this;
+}
+
+/**
+ * @brief 
+ * 
+ * @param iAddr 
+ * 
+ * @return
+ */
 bool SocketAddress::operator==(const SocketAddress& iAddr) const {
   return ((this->get_ip() == iAddr.get_ip()) && (this->get_port() == iAddr.get_port()));
 }
 
+/**
+ * @brief 
+ * 
+ * @param iAddr 
+ * 
+ * @return
+ */
 bool SocketAddress::operator!=(const SocketAddress& iAddr) const {
   return !(*this == iAddr);
 }
@@ -167,6 +197,24 @@ SocketAddress::operator sockaddr(void) const {
  */
 std::string SocketAddress::to_string(void) const {
   return this->get_ip() + ':' + std::to_string(this->get_port());
+}
+
+/**
+ * @brief Gets the port number.
+ * 
+ * @return The port number.
+ */
+port_t& SocketAddress::get_port(void) {
+  return this->port_;
+}
+
+/**
+ * @brief Gets the IP address.
+ * 
+ * @return The IP address.
+ */
+ip_t& SocketAddress::get_ip(void) {
+  return this->ip_;
 }
 
 

@@ -4,7 +4,7 @@
  * @author Hugo Fernandez Solis (hugofernandezsolis@gmail.com)
  * @date 02-12-2023
  * 
- * @file Socket.h
+ * @file ServerSocket.h
  * 
  * @brief 
  */
@@ -16,40 +16,64 @@
 
 #include <logs.h>
 
-#include <SocketTCP.h>
+#include <Socket.h>
+#include <ClientSocket.h>
 
 
 namespace ipc {   // Inter-Process Communication
 
 
 /**
- * Socket related types
+ * ServerSocket related types
  */
 
 
 /**
- * Socket related variables
+ * ServerSocket related variables
  */
 
 
 /**
- * @brief 
- * 
+ * @brief
  */
-class ServerSocket : public SocketTCP {
+class ServerSocket : public Socket {
   public:
-    // Constructor with socket descriptor and socket address parameters
+    /**
+     * @brief
+     * 
+     */
     ServerSocket(void);
+    /**
+     * @brief 
+     * 
+     * @return 
+     */
+    [[nodiscard]] bool listen(const uint& iMaxConnNumber = 1024) const;
 
-    bool bind_to(const SocketAddress& iAddr) const;
+    /**
+     * @brief 
+     * 
+     * @return
+     */
+    bool accept_connection(ClientSocket& oSocket, SocketAddress& oSocketAddr);
 
-    bool start_listening(const uint& iMaxConnNumber) const;
+    /**
+     * @brief
+     * 
+     * @return 
+     */
+    [[nodiscard]] bool send_to(const void* iMessage, const size_t& iSize, const ClientSocket &iClientSocket);
 
-    bool accept_connection(SocketTCP& oSocket, SocketAddress& oSocketAddr) const;
+    /**
+     * @brief
+     * 
+     * @return 
+     */
+    [[nodiscard]] bool recv_from(void* oMessage, size_t& oSize, const ClientSocket &iClientSocket);
 };
 
 
-}
+} // namespace ipc
 
 
 #endif // IPC_SERVER_SOCKET_H
