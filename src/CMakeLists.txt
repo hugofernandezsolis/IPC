@@ -2,7 +2,6 @@
 ###                      INTEGRATE EXTERNAL LIBRARIES                       ###
 ###############################################################################
 ## Integrate GTest for unit testing.
-## Integrate SFML 2D graphics.
 ###############################################################################
 
 include(FetchContent)
@@ -31,13 +30,8 @@ find_package(
 # Get a list of subdirectories in the current directory
 set (
   COMPONENTS
-    common          # common
     Socket          # Sockets
     #Server          # Servers
-)
-
-add_library (
-  ${PROJECT_NAME}
 )
 
 # Iterate over each subdirectory

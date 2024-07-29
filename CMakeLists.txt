@@ -39,32 +39,22 @@ add_compile_options (-Wall -Werror -Wextra -Wpedantic -pedantic)
 # Set the project name.
 project (IPC)
 
-# Enable testing for this project.
-enable_testing()
+# Set project as a library.
+add_library (
+  ${PROJECT_NAME}
+)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bin)
+# Enable testing for this project.
+enable_testing ()
+
+# Set the binaries output directory.
+set (
+  CMAKE_RUNTIME_OUTPUT_DIRECTORY
+    ${CMAKE_CURRENT_LIST_DIR}/bin
+)
+
+# Add the 'submodules' subdirectory for external libs.
+add_subdirectory (submodules)
 
 # Add the 'src' subdirectory for further project structure.
 add_subdirectory (src)
-
-
-###############################################################################
-###                   PROJECT ININSTALATIONITIALIZATION                     ###
-###############################################################################
-## This section sets the neccessary to make the library installable
-###############################################################################
-
-# Process to install the lib
-install(TARGETS ${PROJECT_NAME} ARCHIVE DESTINATION lib)
-
-
-
-# Gather source files for the component library.
-file (
-  GLOB HEADERS
-    CONFIGURE_DEPENDS
-      "${CMAKE_CURRENT_LIST_DIR}/src/*/*.h"
-)
-
-# Add the header files
-install(FILES ${HEADERS} DESTINATION /usr/include)

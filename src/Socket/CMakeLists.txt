@@ -47,7 +47,7 @@ target_sources (
 # Link the needed libraries.
 target_link_libraries (
   ${COMPONENT_LIB}
-    common_lib
+    DEV_COMMON
 )
 
 # Add component tests

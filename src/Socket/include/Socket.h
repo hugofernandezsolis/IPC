@@ -34,10 +34,11 @@ typedef int sd_t;             // Type definition for port numbers
 /**
  * SocketTCP related variables
  */
+// Different types of sockets that can be opened
 enum socket_type {
   SOCKET_TCP = SOCK_STREAM,
   SOCKET_UDP = SOCK_DGRAM,
-  ERROR_TYPE
+  SOCKET_ERROR
 };
 
 

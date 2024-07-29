@@ -40,11 +40,6 @@ bool Socket::open(const socket_type& iSocketType) {
     LOG_ERROR << "Unexpected error while trying to open new socket" << "! Errno: " << std::to_string(errno);
     return false;
   }
-  int optval = 1;
-  socklen_t optlen = sizeof(optval);
-  if (setsockopt(*this, SOL_SOCKET, SO_KEEPALIVE, &optval, optlen) < 0) {
-        perror("setsockopt SO_KEEPALIVE");
-    }
   LOG_INFO << "New socket opened " << *this;
   return true;
 }
@@ -108,7 +103,7 @@ socket_type Socket::get_type(void) const {
   socklen_t length = sizeof(type);
   if (getsockopt(this->get_sd(), SOL_SOCKET, SO_TYPE, &type, &length) == -1) {
     LOG_ERROR << "Unexpected error while trying to retrieve the socket type of socket " << *this;
-    return ERROR_TYPE;
+    return SOCKET_ERROR;
   }
   return type;
 }

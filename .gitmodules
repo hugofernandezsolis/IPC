@@ -1,0 +1,3 @@
+[submodule "submodules/DEV_COMMON"]
+	path = submodules/DEV_COMMON
+	url = https://github.com/hugofernandezsolis/DEV_COMMON.git
