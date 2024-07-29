@@ -50,7 +50,7 @@ enable_testing ()
 # Set the binaries output directory.
 set (
   CMAKE_RUNTIME_OUTPUT_DIRECTORY
-    ${CMAKE_CURRENT_LIST_DIR}/bin
+    ${CMAKE_CURRENT_LIST_DIR}/build/bin
 )
 
 # Add the 'submodules' subdirectory for external libs.
