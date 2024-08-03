@@ -30,6 +30,15 @@ add_compile_options (-Wall -Werror -Wextra -Wpedantic -pedantic)
 
 
 ###############################################################################
+###                            PROJECT VARIABLES                            ###
+###############################################################################
+## This section initializes the project environment variables.
+###############################################################################
+
+set (ENV{LOGGER_CONFIG_FILE} "${CMAKE_CURRENT_LIST_DIR}/configs/Logger.xml")
+
+
+###############################################################################
 ###                         PROJECT INITIALIZATION                          ###
 ###############################################################################
 ## This section initializes the project and sets up necessary configurations,
